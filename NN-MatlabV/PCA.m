@@ -1,0 +1,26 @@
+mat = TRAIN;
+mat = double(mat);
+mat = 1.0*mat/255;
+u = mean(mat);
+mat = double(mat);
+sig = std(mat);
+u_rep = double(repmat(u,size(mat,1),1));
+sig_rep = double(repmat(sig,size(mat,1),1));
+mat = mat - u_rep;
+mat = mat./double(sig_rep); 
+S = (mat - u_rep)'*(mat - u_rep);
+Covariance = S/200;
+%[V,D] = eigs(S,size(S,1)-1);
+%[V,D] = eig(S);
+load('V.mat');
+%load('D.mat');
+eig_v = V(:,1:1845);
+mat_transform = double(mat)*double(eig_v);
+
+mat_transform = double(mat_transform);
+u_tra = mean(mat_transform);
+sig = std(mat_transform);
+u_rep = double(repmat(u_tra,size(mat_transform,1),1));
+sig_rep = double(repmat(sig,size(mat_transform,1),1));
+mat_transform = mat_transform - u_rep;
+mat_transform = mat_transform./double(sig_rep);
